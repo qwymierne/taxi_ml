@@ -18,9 +18,9 @@ def print_sign(sign, val):
     elif val == 5:
         print(Fore.RED + Back.YELLOW + sign + Style.RESET_ALL, end='')
     elif val == 6:
-        print(Fore.GREEN + sign + Style.RESET_ALL, end='')
+        print(Fore.MAGENTA + sign + Style.RESET_ALL, end='')
     else:
-        print(Fore.GREEN + Back.YELLOW + sign + Style.RESET_ALL, end='')
+        print(Fore.MAGENTA + Back.YELLOW + sign + Style.RESET_ALL, end='')
 
 
 # wypisuje symbol zamiast wart. liczbowej
@@ -98,34 +98,33 @@ def print_board(board):
 
 def get_pos_cor(pos_num):
     if pos_num == 0:
-        return -1, -1
-    if pos_num == 1:
         return 0, 0
-    elif pos_num == 2:
+    elif pos_num == 1:
         return 4, 0
-    elif pos_num == 3:
+    elif pos_num == 2:
         return 0, 4
-    else:
+    elif pos_num == 3:
         return 3, 4
+    else:
+        return -1, -1
 
 
 def generate_board(start, end, curr_pos_x, curr_pos_y):
     board = np.zeros(shape=(5, 5))
     start_x, start_y = get_pos_cor(start)
     end_x, end_y = get_pos_cor(end)
-    if start > 0:
+    if start < 4:
         board[start_x][start_y] += 4
-    if end > 0:
-        board[end_x][end_y] += 2
+    board[end_x][end_y] += 2
     board[curr_pos_x][curr_pos_y] += 1
     return board
 
 
 # generuje liste list wszystkich mozliwych do uzyskania plansz
 def generate_boards():
-    boards = [[[[np.zeros(shape=(5, 5)) for i in range(5)] for j in range(5)] for k in range(5)] for l in range(5)]
+    boards = [[[[np.zeros(shape=(5, 5)) for i in range(4)] for j in range(5)] for k in range(5)] for l in range(5)]
     for start in range(5):
-        for end in range(5):
+        for end in range(4):
             for x in range(5):
                 for y in range(5):
                     boards[x][y][start][end] = generate_board(start, end, x, y)
@@ -140,8 +139,8 @@ if not exists(file_name):
         pickle.dump(BOARDS, f)
 
 for start in range(5):
-    for end in range(5):
+    for end in range(4):
         for x in range(5):
             for y in range(5):
-                print_board(BOARDS[start][end][x][y])
+                print_board(BOARDS[x][y][start][end])
 
