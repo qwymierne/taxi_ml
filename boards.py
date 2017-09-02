@@ -100,34 +100,34 @@ def get_pos_cor(pos_num):
     if pos_num == 0:
         return 0, 0
     elif pos_num == 1:
-        return 4, 0
-    elif pos_num == 2:
         return 0, 4
+    elif pos_num == 2:
+        return 4, 0
     elif pos_num == 3:
-        return 3, 4
+        return 4, 3
     else:
         return -1, -1
 
 
-def generate_board(start, end, curr_pos_x, curr_pos_y):
+def generate_board(start, end, curr_pos_row, curr_pos_col):
     board = np.zeros(shape=(5, 5))
-    start_x, start_y = get_pos_cor(start)
-    end_x, end_y = get_pos_cor(end)
+    start_row, start_col = get_pos_cor(start)
+    end_row, end_col = get_pos_cor(end)
     if start < 4:
-        board[start_x][start_y] += 4
-    board[end_x][end_y] += 2
-    board[curr_pos_x][curr_pos_y] += 1
+        board[start_row][start_col] += 4
+    board[end_row][end_col] += 2
+    board[curr_pos_row][curr_pos_col] += 1
     return board
 
 
 # generuje liste list wszystkich mozliwych do uzyskania plansz
 def generate_boards():
     boards = [[[[np.zeros(shape=(5, 5)) for i in range(4)] for j in range(5)] for k in range(5)] for l in range(5)]
-    for start in range(5):
-        for end in range(4):
-            for x in range(5):
-                for y in range(5):
-                    boards[x][y][start][end] = generate_board(start, end, x, y)
+    for row in range(5):
+        for col in range(5):
+            for start in range(5):
+                for end in range(4):
+                    boards[row][col][start][end] = generate_board(start, end, row, col)
     return boards
 
 # lista wszystkich mozliwych ukladow w grze
@@ -138,9 +138,9 @@ if not exists(file_name):
     with open(file_name, 'wb') as f:
         pickle.dump(BOARDS, f)
 
-for start in range(5):
-    for end in range(4):
-        for x in range(5):
-            for y in range(5):
-                print_board(BOARDS[x][y][start][end])
+# for start in range(5):
+#     for end in range(4):
+#         for x in range(5):
+#             for y in range(5):
+#                 print_board(BOARDS[x][y][start][end])
 
