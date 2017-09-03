@@ -137,10 +137,3 @@ if not exists(file_name):
     BOARDS = generate_boards()
     with open(file_name, 'wb') as f:
         pickle.dump(BOARDS, f)
-
-# for start in range(5):
-#     for end in range(4):
-#         for x in range(5):
-#             for y in range(5):
-#                 print_board(BOARDS[x][y][start][end])
-
