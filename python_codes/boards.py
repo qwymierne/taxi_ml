@@ -1,9 +1,11 @@
+# Funkcje do generowania, obslugi i wyswietlania plansz
 import numpy as np
 import pickle
 from colorama import Fore, Back, Style
 from os.path import exists
 
 
+# wypisuje dany znak w sposob okreslony przez val
 def print_sign(sign, val):
     if val == 0:
         print(sign, end='')
@@ -23,7 +25,7 @@ def print_sign(sign, val):
         print(Fore.MAGENTA + Back.YELLOW + sign + Style.RESET_ALL, end='')
 
 
-# wypisuje symbol zamiast wart. liczbowej
+# wypisuje pierwszy wiersz planszy
 def print_first_row(row):
     print("|", end='')
     print_sign("R", row[0])
@@ -38,6 +40,7 @@ def print_first_row(row):
     print("|")
 
 
+# wypisuje drugi lub trzeci wiersz planszy
 def print_second_and_third_row(row):
     print("|", end='')
     print_sign(" ", row[0])
@@ -52,6 +55,7 @@ def print_second_and_third_row(row):
     print("|")
 
 
+# wypisuje czwarty wiersz planszy
 def print_forth_row(row):
     print("|", end='')
     print_sign(" ", row[0])
@@ -66,6 +70,7 @@ def print_forth_row(row):
     print("|")
 
 
+# wypisuje piaty wiersz planszy
 def print_fifth_row(row):
     print("|", end='')
     print_sign("Y", row[0])
@@ -80,7 +85,7 @@ def print_fifth_row(row):
     print("|")
 
 
-# wypisuje searator wierszy
+# wypisuje gorna/dolna granice planszy
 def print_border():
     print("+---------+")
 
@@ -96,6 +101,8 @@ def print_board(board):
     print_border()
 
 
+# zwraca wspolrzene pola-stacji w zaleznosci od jego numeru
+# (-1, -1), gdy nie chodzi o poles-tacje
 def get_pos_cor(pos_num):
     if pos_num == 0:
         return 0, 0
@@ -109,6 +116,7 @@ def get_pos_cor(pos_num):
         return -1, -1
 
 
+# generuje plansze o okreslonym punkcie startowym, koncowym i lokalizacji taksowki
 def generate_board(start, end, curr_pos_row, curr_pos_col):
     board = np.zeros(shape=(5, 5))
     start_row, start_col = get_pos_cor(start)
@@ -120,7 +128,7 @@ def generate_board(start, end, curr_pos_row, curr_pos_col):
     return board
 
 
-# generuje liste list wszystkich mozliwych do uzyskania plansz
+# generuje tablice wszystkich mozliwych do uzyskania plansz
 def generate_boards():
     boards = [[[[np.zeros(shape=(5, 5)) for i in range(4)] for j in range(5)] for k in range(5)] for l in range(5)]
     for row in range(5):
@@ -130,7 +138,7 @@ def generate_boards():
                     boards[row][col][start][end] = generate_board(start, end, row, col)
     return boards
 
-# lista wszystkich mozliwych ukladow w grze
+# plik z lista wszystkich mozliwych ukladow w grze
 file_name = "boards_save"
 
 if not exists(file_name):
